@@ -7,16 +7,29 @@ DELIM=","
 CSV="$1"
 TABLE="$2"
 KEY="$3"
+DEBUG="$4"
 
 [ "$CSV" = "" -o "$TABLE" = "" ] && echo "Syntax: $0 csvfile tablename [keycolumn]" && exit 1
 
-FIELDS=$(head -1 "$CSV" | tr -d "\r" | sed -e 's/'$DELIM'/` varchar(512),`/g' | sed -e 's/"//g')
+if [ ! -f "$CSV" ]; then
+    echo "File $CSV not found" && exit 1
+fi
+
+FIELDS=$(perl -pe 's/\r\n|\n|\r/\n/g' "$CSV" | head -1 | sed -e 's/'$DELIM'/` varchar(512),`/g' | sed -e 's/"//g')
 FIELDS='`'"$FIELDS"'` varchar(512)'
 [ "$KEY" != "" ] && FIELDS="$FIELDS"', PRIMARY KEY (`'"$KEY"'`)'
 
-LINE_ENDINGS=$(file "$CSV" | grep "CRLF" 2>&1 1>/dev/null && echo '\\r\\n' || echo '\\n')
-
-#echo "$FIELDS" && exit
+if file "$CSV" | grep " CRLF " 2>&1 1>/dev/null ; then
+    LINE_ENDINGS='CRLF'
+    LINE_ENDINGS_CHAR='\\r\\n'
+elif file "$CSV" | grep " CR " 2>&1 1>/dev/null ; then
+    LINE_ENDINGS='CR'
+    LINE_ENDINGS_CHAR='\\r'
+else
+    LINE_ENDINGS='LF'
+    LINE_ENDINGS_CHAR='\\n'
+fi
+[ "$DEBUG" != "" ] && printf "$FIELDS::$LINE_ENDINGS" && exit
 
 mysql $MYSQL_ARGS $DB -e "
 DROP TABLE IF EXISTS $TABLE;
@@ -29,6 +42,6 @@ mysql $MYSQL_ARGS $DB -e "
 LOAD DATA LOCAL INFILE '$(pwd)/$CSV' INTO TABLE $TABLE
 FIELDS TERMINATED BY '$DELIM'
 OPTIONALLY ENCLOSED BY '\"'
-LINES TERMINATED BY '$LINE_ENDINGS'
+LINES TERMINATED BY '$LINE_ENDINGS_CHAR'
 IGNORE 1 LINES;
 "
