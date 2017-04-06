@@ -21,13 +21,13 @@ FIELDS='`'"$FIELDS"'` varchar(512)'
 
 if file "$CSV" | grep " CRLF " 2>&1 1>/dev/null ; then
     LINE_ENDINGS='CRLF'
-    LINE_ENDINGS_CHAR='\\r\\n'
+    LINE_ENDINGS_CHAR='\r\n'
 elif file "$CSV" | grep " CR " 2>&1 1>/dev/null ; then
     LINE_ENDINGS='CR'
-    LINE_ENDINGS_CHAR='\\r'
+    LINE_ENDINGS_CHAR='\r'
 else
     LINE_ENDINGS='LF'
-    LINE_ENDINGS_CHAR='\\n'
+    LINE_ENDINGS_CHAR='\n'
 fi
 [ "$DEBUG" != "" ] && printf "$FIELDS::$LINE_ENDINGS" && exit
 
