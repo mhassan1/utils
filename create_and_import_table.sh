@@ -1,7 +1,7 @@
 #!/bin/sh
 
 MYSQL_ARGS="--local-infile -u root"
-DB="mydb"
+DB="sgyadmins"
 DELIM=","
 
 CSV="$1"
