@@ -11,6 +11,7 @@
   "dependencies": {
     "async": "^2.4.0",
     "request": "^2.81.0",
-    "streaming-json-stringify": "^3.1.0"
+    "streaming-json-stringify": "^3.1.0",
+    "json2csv": "^3.7.3"
   }
 }
