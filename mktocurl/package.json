@@ -12,6 +12,8 @@
     "async": "^2.4.0",
     "request": "^2.81.0",
     "streaming-json-stringify": "^3.1.0",
-    "json2csv": "^3.7.3"
+    "json2csv": "^3.7.3",
+    "winston": "^2.3.1",
+    "lodash": "^4.17.4"
   }
 }
