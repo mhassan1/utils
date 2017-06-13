@@ -30,9 +30,11 @@ var baseFields = ['id', 'updatedAt', 'lastName', 'email', 'createdAt', 'firstNam
 var maxFieldsPerCall = 250;
 var outputJsonOrCsv = "csv";  // "csv" or "json"
 
+var marketoListId = 5174; // 5123 is short (60k) list, 5174 is full list
+
 async.doWhilst(
 	function (cb) {
-		var baseUrl = 'https://601-cpx-764.mktorest.com/rest/v1/list/5123/leads.json?0=0'; // 0=0 simplifies building URL
+		var baseUrl = 'https://601-cpx-764.mktorest.com/rest/v1/list/' + marketoListId + '/leads.json?0=0'; // 0=0 simplifies building URL
         if (nextPageToken) {
             baseUrl += '&nextPageToken=' + nextPageToken;
         }
