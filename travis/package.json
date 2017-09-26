@@ -1,0 +1,14 @@
+{
+  "name": "travis",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "./node_modules/mocha/bin/_mocha"
+  },
+  "dependencies": {
+    "async": "2.5.0"
+  },
+  "devDependencies": {
+    "mocha": "3.5.3"
+  }
+}
